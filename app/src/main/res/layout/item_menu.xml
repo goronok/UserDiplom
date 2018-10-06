@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/layoutMenu"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_marginBottom="15dp"
+    android:layout_height="50dp">
+
+
+    <LinearLayout
+        android:background="@drawable/top_item_menu"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
+
+    <TextView
+        android:background="#4caf81"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/nameMenu"
+        android:text="Активности"
+        android:fontFamily="@font/sandman"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="#cce8db"
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+
+    <LinearLayout
+        android:background="@drawable/bottom_item_menu"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
+
+</LinearLayout>
