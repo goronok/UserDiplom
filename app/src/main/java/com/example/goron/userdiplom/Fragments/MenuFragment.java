@@ -15,7 +15,7 @@ public class MenuFragment extends Fragment {
 
 
     RecyclerView recyclerMenu;
-    AdapterMenu adapterMenu;
+    //AdapterMenu adapterMenu;
 
     public MenuFragment() {
         // Required empty public constructor
