@@ -63,19 +63,8 @@
                         android:background="#11ffffff"
                         android:layout_height="match_parent" />
 
-                    <ImageView
-                        android:layout_below="@+id/textHeader"
-                        android:src="@drawable/logodn120"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
 
                 </RelativeLayout>
-
-
-
-
-
-
 
 
                 <FrameLayout
