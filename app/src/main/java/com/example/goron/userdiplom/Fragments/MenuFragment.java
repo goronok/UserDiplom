@@ -15,6 +15,8 @@ public class MenuFragment extends Fragment {
 
     private String name, password;
 
+
+
     public MenuFragment() {
         // Required empty public constructor
     }
