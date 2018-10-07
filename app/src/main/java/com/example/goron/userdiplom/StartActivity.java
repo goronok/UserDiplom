@@ -3,6 +3,7 @@ package com.example.goron.userdiplom;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -24,10 +25,14 @@ public class StartActivity extends AppCompatActivity {
 
     MenuFragment menuFragment;
 
+    String name, password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+
+
 
 
         // Инициализируем элементы:
@@ -50,7 +55,13 @@ public class StartActivity extends AppCompatActivity {
 
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
 
-        menuFragment = new MenuFragment();
+
+
+        Bundle arguments = getIntent().getExtras();
+        name = arguments.get("name").toString();
+        password = arguments.get("password").toString();
+
+        menuFragment = MenuFragment.newInstance(name, password);
         showFragment(menuFragment);
 
         drawerLayout.addDrawerListener(toggle);
@@ -63,4 +74,23 @@ public class StartActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.content_frame, fragment).addToBackStack(null).commit();
     }//showFragment
+
+
+    @Override
+    public void onBackPressed() {
+
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
+
+        // Если открыто боковое меню - закрываем его, Если в стеке последний фрагмент закрываем активность иначе возвращаемся к предыдущему фрагменту
+        if (drawerLayout.isDrawerOpen(GravityCompat.START))  drawerLayout.closeDrawer(GravityCompat.START);
+        else if (count == 1) {
+           // super.onBackPressed();
+            moveTaskToBack(true);
+            finish();
+        }else {
+            getSupportFragmentManager().popBackStack();
+        }
+
+    }
 }

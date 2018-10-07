@@ -188,7 +188,7 @@
                 <TextView
                     android:textColor="@color/white"
                     android:text="Моя очередь"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/sandman"
                     android:textSize="22sp"
                     android:textStyle="bold"

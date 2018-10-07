@@ -13,19 +13,18 @@ import com.example.goron.userdiplom.R;
 
 public class MenuFragment extends Fragment {
 
-
-    RecyclerView recyclerMenu;
-    AdapterMenu adapterMenu;
+    private String name, password;
 
     public MenuFragment() {
         // Required empty public constructor
     }
 
 
-    public static MenuFragment newInstance() {
+    public static MenuFragment newInstance(String name, String password) {
         MenuFragment fragment = new MenuFragment();
         Bundle args = new Bundle();
-
+        args.putString("name", name);
+        args.putString("password", password);
         fragment.setArguments(args);
         return fragment;
     }
@@ -33,7 +32,10 @@ public class MenuFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {}
+        if (getArguments() != null) {
+            name = getArguments().getString("name");
+            password = getArguments().getString("password");
+        }
     }
 
     @Override
@@ -42,15 +44,10 @@ public class MenuFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_menu, container, false);
 
-       // recyclerMenu = view.findViewById(R.id.recyclerMenu);
-       // recyclerMenu.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-
-
-       TextView header =  getActivity().findViewById(R.id.textHeader);
-       header.setText("Меню /n Добро пожаловать /n Donbass Extreme Fest ");
-
+       ((TextView)getActivity().findViewById(R.id.textHeader)).setText("Меню");
+       ((TextView)getActivity().findViewById(R.id.textFooter)).setText(name);
 
         return view;
     }
