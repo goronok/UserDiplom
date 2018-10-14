@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.example.goron.userdiplom.Manager.DbManager;
 import com.example.goron.userdiplom.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -94,7 +95,8 @@ public class MessagingService extends FirebaseMessagingService {
 
     @Override
     public void onNewToken(String s) {
-        // TODO: send new token to server
+        DbManager manager = new DbManager(getApplicationContext());
+        manager.addFirebaseToken(s);
         Log.d("CurrentToken", "new token: " + s);
     }
 }
