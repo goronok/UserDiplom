@@ -5,8 +5,10 @@ import android.database.Cursor;
 import android.util.Log;
 
 import com.example.goron.userdiplom.Database.DatabaseHelper;
+import com.example.goron.userdiplom.Model.Schedule;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -213,4 +215,25 @@ public class DbManager {
 
         return token;
     }// getFirebaseToken
+
+    public Schedule getActivityInfo(int activityId){
+        String query = "select * from " + DatabaseHelper.TABLE_ACTIVITIES
+                + " where activityId = " + activityId + ";";
+
+        Cursor raw = getData(query);
+        raw.moveToFirst();
+
+        Schedule result = new Schedule(
+                raw.getInt(raw.getColumnIndex("activityId")),
+                Date.valueOf(raw.getString(raw.getColumnIndex("date"))),
+                raw.getString(raw.getColumnIndex("startsAt")),
+                raw.getString(raw.getColumnIndex("endsAt")),
+                raw.getString(raw.getColumnIndex("activityName")),
+                raw.getString(raw.getColumnIndex("description")),
+                null,null
+        );
+
+        helper.close();
+        return result;
+    }
 }// DbManager
