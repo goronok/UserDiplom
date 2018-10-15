@@ -67,7 +67,7 @@ public class MyQueueAdapter extends RecyclerView.Adapter<MyQueueAdapter.MyQueueA
 
                 if(myQueueAdapterVH.myQueue.getText().equals("--")){
 
-                    AlertDialog.Builder mDialogBuilder = getDialog(" Вы уверены что хотите ВСТАТЬ в очередь " +activities.getName() +" ?");
+                    AlertDialog.Builder mDialogBuilder = getDialog("Хотите ВСТАТЬ в очередь на" +activities.getName() +" ?");
 
                     //Настраиваем сообщение в диалоговом окне:
                     mDialogBuilder
@@ -98,7 +98,7 @@ public class MyQueueAdapter extends RecyclerView.Adapter<MyQueueAdapter.MyQueueA
                 }else{
 
 
-                    AlertDialog.Builder mDialogBuilder = getDialog(" Вы уверены что хотите УЙТИ из очереди " +activities.getName() +" ?");
+                    AlertDialog.Builder mDialogBuilder = getDialog("Хотите УЙТИ из очереди на " +activities.getName() +" ?");
 
                     //Настраиваем сообщение в диалоговом окне:
                     mDialogBuilder

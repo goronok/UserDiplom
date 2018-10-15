@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,7 +103,19 @@ public class AboutActivitiesFragment extends Fragment implements NestedScrollVie
         webView.setVerticalScrollBarEnabled(false);
         recyclerView = view.findViewById(R.id.recyclerImage);
 
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        float density  = getResources().getDisplayMetrics().density;
+        float height = displayMetrics.heightPixels / density;
+        float width = displayMetrics.widthPixels / density;
+
+        if(width < 400){
+            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
+        }else {
+            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));
+        }
+
         ImageAdapter imageAdapter = new ImageAdapter(getContext(), schedule.getPhotos());
 
         recyclerView.setNestedScrollingEnabled(false);
