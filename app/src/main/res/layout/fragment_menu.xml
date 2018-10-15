@@ -3,11 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginRight="10dp"
+    android:layout_marginLeft="10dp"
     android:background="@color/blackLogin"
     tools:context=".Fragments.MenuFragment">
 
 
     <LinearLayout
+
         android:orientation="vertical"
         android:weightSum="2"
         android:layout_width="match_parent"
@@ -26,6 +29,7 @@
 
 
             <RelativeLayout
+                android:id="@+id/relationActivities"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -57,12 +61,13 @@
             <LinearLayout
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
-                android:background="@color/background"
-                android:layout_width="1dp"
+                android:background="@color/mainGreen"
+                android:layout_width="2dp"
                 android:layout_height="match_parent"/>
 
 
             <RelativeLayout
+                android:id="@+id/relationSchedule"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -104,21 +109,21 @@
             <LinearLayout
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"
-                android:background="@color/background"
+                android:background="@color/mainGreen"
                 android:layout_weight="1"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"/>
+                android:layout_height="2dp"/>
 
 
             <LinearLayout
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"
-                android:background="@color/background"
+                android:background="@color/mainGreen"
                 android:layout_weight="1"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"/>
+                android:layout_height="2dp"/>
             </LinearLayout>
 
 
@@ -136,6 +141,7 @@
 
 
             <RelativeLayout
+                android:id="@+id/relationMap"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -167,11 +173,12 @@
             <LinearLayout
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
-                android:background="@color/background"
-                android:layout_width="1dp"
+                android:background="@color/mainGreen"
+                android:layout_width="2dp"
                 android:layout_height="match_parent"/>
 
             <RelativeLayout
+                android:id="@+id/relationMyQueue"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">

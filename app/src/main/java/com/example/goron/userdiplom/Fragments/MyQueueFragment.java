@@ -1,28 +1,34 @@
 package com.example.goron.userdiplom.Fragments;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.animation.DynamicAnimation;
+import android.support.animation.SpringAnimation;
+import android.support.animation.SpringForce;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.goron.userdiplom.Adapters.ActivitiesAdapter;
+import com.example.goron.userdiplom.Adapters.MyQueueAdapter;
 import com.example.goron.userdiplom.Interface.Service;
+import com.example.goron.userdiplom.MainActivity;
 import com.example.goron.userdiplom.Model.Activities;
-import com.example.goron.userdiplom.Model.Schedule;
 import com.example.goron.userdiplom.R;
 import com.example.goron.userdiplom.Service.ServiceGenerator;
-
 
 import java.util.List;
 
@@ -30,23 +36,24 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 
-public class ActivityFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener  {
+public class MyQueueFragment extends Fragment  implements SwipeRefreshLayout.OnRefreshListener {
+
 
     RecyclerView recyclerView;
-    ActivitiesAdapter activitiesAdapter;
-    ProgressDialog mDialog;
-
+    MyQueueAdapter myQueueAdapter;
+    private Call<List<Activities>> callActivities;
+    RelativeLayout relationLayout;
     SwipeRefreshLayout refresh;
 
-    private Call<List<Schedule>> callSchedule;
+    ProgressDialog mDialog;
 
-    public ActivityFragment() {
+    public MyQueueFragment() {
         // Required empty public constructor
     }
 
 
-    public static ActivityFragment newInstance() {
-        ActivityFragment fragment = new ActivityFragment();
+    public static MyQueueFragment newInstance() {
+        MyQueueFragment fragment = new MyQueueFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -62,74 +69,63 @@ public class ActivityFragment extends Fragment implements SwipeRefreshLayout.OnR
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-            mDialog = new ProgressDialog(getContext());
-            mDialog.setMessage("Загрузка активностей...");
-            mDialog.setCancelable(false);
-            mDialog.show();
-
-
-
-
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_activity, container, false);
+        View view = inflater.inflate(R.layout.fragment_my_queue, container, false);
 
 
         refresh = view.findViewById(R.id.refresh);
-        refresh.setOnRefreshListener(this);
         recyclerView = view.findViewById(R.id.recycler);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),1));
-        TextView header =  getActivity().findViewById(R.id.textHeader);
-        header.setText("Активити");
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        relationLayout = view.findViewById(R.id.relationLayout);
+
+        mDialog = new ProgressDialog(getContext());
+        mDialog.setMessage("Loading...");
+        mDialog.setCancelable(false);
+        mDialog.show();
+
+        getActivities("2018-09-09");
 
 
-        getAllActivities();
-
-
-
-
+        ((TextView)getActivity().findViewById(R.id.textHeader)).setText("Моя очередь");
 
         return view;
-    }//onCreateView
+    }
 
-    private void getAllActivities() {
 
-        callSchedule = getService().getSchedule();
+    public void getActivities(String date) {
 
-        callSchedule.enqueue(new Callback<List<Schedule>>() {
+        callActivities = getService().getActivities(date);
+
+        callActivities.enqueue(new Callback<List<Activities>>() {
             @Override
-            public void onResponse(Call<List<Schedule>> call, retrofit2.Response<List<Schedule>> response) {
+            public void onResponse(Call<List<Activities>> call, retrofit2.Response<List<Activities>> response) {
                 if (response.isSuccessful()) {
 
                     if(response.code() == 200) {
-                        activitiesAdapter = new ActivitiesAdapter(response.body(), getActivity(), mDialog);
-                        recyclerView.setAdapter(activitiesAdapter);
-
-                        if(refresh.isRefreshing()){
-                            refresh.setRefreshing(false);
-                        }
-                    }
-
+                        myQueueAdapter = new MyQueueAdapter(response.body(), getActivity(), mDialog, refresh);
+                        recyclerView.setAdapter(myQueueAdapter);
+                    }//if
                 } else {
-                    Toast.makeText(getActivity(), "Отсутствие доступа к ресурсу", Toast.LENGTH_LONG).show();
-                }
+                    Toast.makeText(getActivity(), "error response, no access to resource?", Toast.LENGTH_LONG).show();
+                }//if-else
             }
 
             @Override
-            public void onFailure(Call<List<Schedule>> callActivities, Throwable t) {
+            public void onFailure(Call<List<Activities>> callActivities, Throwable t) {
                 Toast.makeText(getActivity(), t.toString(), Toast.LENGTH_LONG).show();
             }
         });
 
 
 
-    }
 
+    }
 
     // Получить сервис для работы с сервером
     private Service getService(){
         return ServiceGenerator.createService(Service.class);
     }
-
 
     @Override
     public void onDestroy() {
@@ -139,11 +135,8 @@ public class ActivityFragment extends Fragment implements SwipeRefreshLayout.OnR
         }
     }
 
-
     @Override
     public void onRefresh() {
-
-        getAllActivities();
-
+        getActivities("2018-09-09");
     }
 }
