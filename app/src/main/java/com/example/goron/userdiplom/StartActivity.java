@@ -1,5 +1,8 @@
 package com.example.goron.userdiplom;
 
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -10,9 +13,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
+import com.example.goron.userdiplom.Fragments.ActivityFragment;
 import com.example.goron.userdiplom.Fragments.MenuFragment;
+import com.example.goron.userdiplom.Fragments.MyQueueFragment;
+import com.example.goron.userdiplom.Fragments.ScheduleFragment;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -61,12 +69,31 @@ public class StartActivity extends AppCompatActivity {
         name = arguments.get("name").toString();
         password = arguments.get("password").toString();
 
-        menuFragment = MenuFragment.newInstance(name, password);
-        showFragment(menuFragment);
+
+
 
         drawerLayout.addDrawerListener(toggle);
 
+
         toggle.syncState();
+
+        // Переход по NavigationView
+        navigationMenu();
+
+
+        if (getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE || getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            // If the screen is now in landscape mode, we can show the
+            // dialog in-line with the list so we don't need this activity.
+
+            return;
+        } else {
+            Toast.makeText(getApplicationContext(), "Добро пожаловать", Toast.LENGTH_LONG).show();
+            menuFragment = MenuFragment.newInstance();
+            showFragment(menuFragment);
+        }
+
+
     }
 
 
@@ -87,10 +114,59 @@ public class StartActivity extends AppCompatActivity {
         else if (count == 1) {
            // super.onBackPressed();
             moveTaskToBack(true);
-            finish();
+
         }else {
             getSupportFragmentManager().popBackStack();
         }
 
+    }
+
+
+    // Переход по NavigationView
+    private void navigationMenu() {
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+                int id = menuItem.getItemId();
+                Intent intent;
+                switch (id) {
+
+
+                    case R.id.activitys:
+                        showFragment(ActivityFragment.newInstance());
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+
+
+                    case R.id.settings:
+
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+
+                    case R.id.schedule:
+                        showFragment(ScheduleFragment.newInstance());
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+
+                    case R.id.exit:
+
+                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.putExtra("CloseApp", true);
+                        startActivity(intent);
+
+                        break;
+
+
+                    case R.id.myqueues:
+                        showFragment(MyQueueFragment.newInstance());
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+                }
+                return false;
+            }
+        });
     }
 }
