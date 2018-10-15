@@ -3,6 +3,7 @@ package com.example.goron.userdiplom.Fragments;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -80,7 +81,17 @@ public class ActivityFragment extends Fragment implements SwipeRefreshLayout.OnR
         refresh = view.findViewById(R.id.refresh);
         refresh.setOnRefreshListener(this);
         recyclerView = view.findViewById(R.id.recycler);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),1));
+
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),1));
+        }else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
+        }
+
+
+
+
         TextView header =  getActivity().findViewById(R.id.textHeader);
         header.setText("Активити");
 
