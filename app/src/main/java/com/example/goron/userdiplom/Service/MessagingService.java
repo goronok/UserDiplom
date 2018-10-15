@@ -40,6 +40,19 @@ public class MessagingService extends FirebaseMessagingService {
                         )
                 );
                 break;
+
+            // изменилось расписание
+            case 1:
+                break;
+
+            // подходит очередь
+            case 200:
+                break;
+
+            // опоздал
+            case 201:
+                break;
+
             default:
                 break;
         }
