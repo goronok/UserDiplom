@@ -14,8 +14,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceGenerator {
 
-    public static final String API_BASE_URL = "http://af2e9fbb.ngrok.io/api/v1/";
-    public static final String API_BASE_URL_IMAGE = "http://af2e9fbb.ngrok.io/";
+    public static final String API_BASE_URL = "http://3ccbb8c0.ngrok.io/api/v1/";
+    public static final String API_BASE_URL_IMAGE = "http://3ccbb8c0.ngrok.io/";
 
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 

@@ -92,7 +92,7 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<ActivitiesAdapter.Ac
             }
         });
 
-        if(i == 1){
+        if(mDialog != null){
             mDialog.cancel();
         }
 

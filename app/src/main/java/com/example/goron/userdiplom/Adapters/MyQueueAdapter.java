@@ -1,7 +1,9 @@
 package com.example.goron.userdiplom.Adapters;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -29,7 +31,6 @@ public class MyQueueAdapter extends RecyclerView.Adapter<MyQueueAdapter.MyQueueA
 
     List<Activities> activitiesList;
     Context context;
-    Queue queue;
     ProgressDialog mDialog;
     SwipeRefreshLayout refresh;
 
@@ -55,17 +56,8 @@ public class MyQueueAdapter extends RecyclerView.Adapter<MyQueueAdapter.MyQueueA
     public void onBindViewHolder(@NonNull final MyQueueAdapterVH myQueueAdapterVH, final int i) {
 
         final Activities activities = activitiesList.get(i);
-
-
-
         myQueueAdapterVH.nameActivity.setText(activities.getName());
-
-
-
         getMyQueue(activities.getId(), myQueueAdapterVH.myQueue, i);
-
-
-
 
         myQueueAdapterVH.layoutItemQueue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,27 +66,96 @@ public class MyQueueAdapter extends RecyclerView.Adapter<MyQueueAdapter.MyQueueA
                 mDialog.show();
 
                 if(myQueueAdapterVH.myQueue.getText().equals("--")){
-                    addMeFromQueue(activities.getId(), myQueueAdapterVH.myQueue, i);
+
+                    AlertDialog.Builder mDialogBuilder = getDialog(" Вы уверены что хотите ВСТАТЬ в очередь " +activities.getName() +" ?");
+
+                    //Настраиваем сообщение в диалоговом окне:
+                    mDialogBuilder
+                            .setCancelable(false)
+                            .setPositiveButton("OK",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog,int id) {
+                                            addMeFromQueue(activities.getId(), myQueueAdapterVH.myQueue, i);
+                                        }
+                                    })
+                            .setNegativeButton("Отмена",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog,int id) {
+                                            dialog.cancel();
+                                            if(mDialog != null){
+                                                mDialog.cancel();
+                                            }
+                                        }
+                                    });
+
+                    //Создаем AlertDialog:
+                    AlertDialog alertDialog = mDialogBuilder.create();
+                    //и отображаем его:
+                    alertDialog.show();
+
+
+
                 }else{
-                    deleteMeFromQueue(activities.getId(), myQueueAdapterVH.myQueue, i);
+
+
+                    AlertDialog.Builder mDialogBuilder = getDialog(" Вы уверены что хотите УЙТИ из очереди " +activities.getName() +" ?");
+
+                    //Настраиваем сообщение в диалоговом окне:
+                    mDialogBuilder
+                            .setCancelable(false)
+                            .setPositiveButton("OK",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog,int id) {
+                                            deleteMeFromQueue(activities.getId(), myQueueAdapterVH.myQueue, i);
+                                        }
+                                    })
+                            .setNegativeButton("Отмена",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog,int id) {
+                                            dialog.cancel();
+                                            if(mDialog != null){
+                                                mDialog.cancel();
+                                            }
+                                        }
+                                    });
+
+                    //Создаем AlertDialog:
+                    AlertDialog alertDialog = mDialogBuilder.create();
+                    //и отображаем его:
+                    alertDialog.show();
+
                 }
 
             }
         });
 
-
-
     }
+
+
+    private AlertDialog.Builder getDialog(String textDialog){
+        //Получаем вид с файла dialog_swipee.xml, который применим для диалогового окна:
+        LayoutInflater li = LayoutInflater.from(context);
+        View promptsView = li.inflate(R.layout.dialog_click_queue, null);
+        //Создаем AlertDialog
+        AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(context);
+
+        //Настраиваем prompt.xml для нашего AlertDialog:
+        mDialogBuilder.setView(promptsView);
+
+        //Настраиваем отображение поля текста в открытом диалоге:
+        final TextView tvText = (TextView) promptsView.findViewById(R.id.tvText);
+
+        tvText.setText(textDialog);
+
+        return mDialogBuilder;
+    }
+
+
 
     @Override
     public int getItemCount() {
         return activitiesList.size();
     }
-
-
-
-
-
 
     private void getMyQueue(int idActivity, final TextView myQueue, final int position){
 
@@ -115,9 +176,6 @@ public class MyQueueAdapter extends RecyclerView.Adapter<MyQueueAdapter.MyQueueA
                                 refresh.setRefreshing(false);
                             }
                         }
-
-
-
                         // Если ошибка 404
                     } else if (response.code() == 404) {
                         myQueue.setText("--");
@@ -145,10 +203,10 @@ public class MyQueueAdapter extends RecyclerView.Adapter<MyQueueAdapter.MyQueueA
 
 
 
+    // Удалить меня из очереди
     private void deleteMeFromQueue(final int idActivity, final TextView myQueue, final int position){
 
         Call<QueueAddorDelete> queueCall = getService().deleteMeFromQueue(idActivity);
-
 
         queueCall.enqueue(new Callback<QueueAddorDelete>() {
             @Override
@@ -185,6 +243,7 @@ public class MyQueueAdapter extends RecyclerView.Adapter<MyQueueAdapter.MyQueueA
 
 
 
+    // Добавить меня в очередь
     private void addMeFromQueue(final int idActivity, final TextView myQueue, final int position){
 
         Call<QueueAddorDelete> queueCall = getService().addMeFromQueue(idActivity);

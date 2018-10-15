@@ -74,15 +74,24 @@ public class MyQueueFragment extends Fragment  implements SwipeRefreshLayout.OnR
 
 
         refresh = view.findViewById(R.id.refresh);
+        refresh.setOnRefreshListener(this);
         recyclerView = view.findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         relationLayout = view.findViewById(R.id.relationLayout);
 
-        mDialog = new ProgressDialog(getContext());
-        mDialog.setMessage("Loading...");
-        mDialog.setCancelable(false);
-        mDialog.show();
+        if(mDialog == null) {
+            mDialog = new ProgressDialog(getContext());
+            mDialog.setMessage("Получение очередей...");
+            mDialog.setCancelable(false);
+            mDialog.show();
+        }else if(!mDialog.isShowing()){
+            mDialog.show();
+
+        }
+
+
+
 
         getActivities("2018-09-09");
 

@@ -46,6 +46,8 @@ public class AboutActivitiesFragment extends Fragment implements NestedScrollVie
     // Информация по очереди
     private InfoQueue infoQueue;
 
+
+
     ImageView imageView;
     TextView textViewTime, textViewCount, textViewAvgTime;
     WebView webView;
@@ -79,6 +81,16 @@ public class AboutActivitiesFragment extends Fragment implements NestedScrollVie
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_about_activities, container, false);
 
+
+        if(mDialog == null) {
+            mDialog = new ProgressDialog(getContext());
+            mDialog.setMessage("Загрузка информации...");
+            mDialog.setCancelable(false);
+            mDialog.show();
+        }else if(!mDialog.isShowing()){
+            mDialog.show();
+
+        }
 
         // Инициализируем элементы:
         webView = view.findViewById(R.id.webView);
@@ -134,6 +146,7 @@ public class AboutActivitiesFragment extends Fragment implements NestedScrollVie
                     });
 
 
+
                     if(schedule.getDescription() == null){
                         webView.loadData("Нет описания", "text/html; charset=utf-8", "utf-8");
                         webView.setBackgroundColor(0x00000000);
@@ -148,6 +161,7 @@ public class AboutActivitiesFragment extends Fragment implements NestedScrollVie
                     textViewCount.setText( String.valueOf(infoQueue.getInfo().getLength()));
                     textViewAvgTime.setText( String.valueOf(infoQueue.getInfo().getAverageTime()));
 
+                    mDialog.cancel();
 
                 }else if(response.code() == 400){
                     Toast.makeText(getContext(), "Недействительные параметры", Toast.LENGTH_LONG).show();

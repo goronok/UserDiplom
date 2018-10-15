@@ -2,6 +2,7 @@ package com.example.goron.userdiplom.Adapters;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,8 @@ public class AdapterSchedule extends BaseExpandableListAdapter {
     // Коллекция с расписанием
     List<Schedule> scheduleList;
 
+
+
     // Коллекция с датами фестиваля
     List<Date> dates;
 
@@ -41,6 +44,7 @@ public class AdapterSchedule extends BaseExpandableListAdapter {
         this.context = context;
         this.scheduleList = scheduleList;
         this.dates = datesFestival.getDates();
+
 
         // Заполняем HashMap (ключ: Дата, значение: объект)
         for (Schedule objects : scheduleList) {

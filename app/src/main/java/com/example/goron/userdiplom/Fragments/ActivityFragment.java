@@ -61,12 +61,15 @@ public class ActivityFragment extends Fragment implements SwipeRefreshLayout.OnR
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        if(mDialog == null) {
             mDialog = new ProgressDialog(getContext());
             mDialog.setMessage("Загрузка активностей...");
             mDialog.setCancelable(false);
             mDialog.show();
+        }else if(!mDialog.isShowing()){
+            mDialog.show();
 
+        }
 
 
 

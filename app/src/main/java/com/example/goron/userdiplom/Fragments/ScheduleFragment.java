@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 
-public class ScheduleFragment extends Fragment {
+public class ScheduleFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener  {
 
 
     ExpandableListView expandableListView;
@@ -37,6 +38,7 @@ public class ScheduleFragment extends Fragment {
 
     List<Schedule> shedulesList;
     DatesFestival datesFestival;
+    SwipeRefreshLayout refresh;
 
     public ScheduleFragment() {
         // Required empty public constructor
@@ -66,14 +68,12 @@ public class ScheduleFragment extends Fragment {
             mDialog.setCancelable(false);
             mDialog.show();
 
-
-
-
-
-
-
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_schedule, container, false);
+
+        refresh = view.findViewById(R.id.refresh);
+
+        refresh.setOnRefreshListener(this);
 
         expandableListView = view.findViewById(R.id.exppandableList);
         getDatesFestival();
@@ -113,6 +113,8 @@ public class ScheduleFragment extends Fragment {
 
                         mDialog.cancel();
 
+                        refresh.setRefreshing(false);
+
                     }
 
                 } else {
@@ -138,5 +140,10 @@ public class ScheduleFragment extends Fragment {
         if(mDialog != null && mDialog.isShowing()) {
             mDialog.cancel();
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        getDatesFestival();
     }
 }
