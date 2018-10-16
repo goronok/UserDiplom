@@ -13,7 +13,7 @@
 
 
     <TextView
-        android:layout_weight="0.8"
+        android:layout_weight="0.5"
         android:background="#4caf81"
         android:paddingTop="5dp"
         android:layout_gravity="center_horizontal"
@@ -21,7 +21,7 @@
         android:text="Активности"
         android:fontFamily="@font/sandman"
         android:textAlignment="center"
-        android:textSize="25sp"
+        android:textSize="32sp"
         android:textStyle="bold"
         android:textColor="#cce8db"
         android:layout_width="match_parent"
@@ -33,13 +33,13 @@
 
     <TextView
         android:id="@+id/myQueue"
-        android:layout_weight="1.2"
+        android:layout_weight="1.5"
         android:text="--"
         android:background="#4caf81"
         android:layout_gravity="center_horizontal"
         android:fontFamily="@font/sandman"
         android:textAlignment="center"
-        android:textSize="25sp"
+        android:textSize="32sp"
         android:textStyle="bold"
         android:textColor="#cce8db"
         android:layout_width="match_parent"

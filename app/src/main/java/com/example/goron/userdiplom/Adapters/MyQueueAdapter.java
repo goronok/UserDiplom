@@ -168,7 +168,7 @@ public class MyQueueAdapter extends RecyclerView.Adapter<MyQueueAdapter.MyQueueA
                 public void onResponse(Call<Queue> call, retrofit2.Response<Queue> response) {
                     if (response.isSuccessful()) {
 
-                        myQueue.setText(String.valueOf(response.body().getPosition()));
+                        myQueue.setText(String.valueOf(response.body().getPosition()+1));
 
                         if(position == getItemCount() - 1){
                             mDialog.cancel();

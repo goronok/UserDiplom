@@ -1,10 +1,12 @@
 package com.example.goron.userdiplom.Service;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -29,6 +31,8 @@ public class MessagingService extends FirebaseMessagingService {
     public void handleMessage() {
         int messageType = Integer.parseInt(currentMessage.getData().get("type"));
         int notificationId;
+
+        initChannels(this);
 
         switch (messageType) {
             // тип сообщения 0 для теста
@@ -99,7 +103,7 @@ public class MessagingService extends FirebaseMessagingService {
     // notifyPendingIntent - для вызова активности/фрагмента при нажатии
     //                       null - если не требуется переход
     private NotificationCompat.Builder createNotification(String title, String body, PendingIntent notifyPendingIntent) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "default")
                 .setSmallIcon(R.drawable.logodn120)
                 .setContentTitle(title)
                 .setContentText(body)
@@ -109,6 +113,22 @@ public class MessagingService extends FirebaseMessagingService {
         if (notifyPendingIntent != null)
             builder.setContentIntent(notifyPendingIntent);
         return builder;
+    }
+
+    // создание канала для уведомление
+    // необходимо для версии API >= 26
+    public void initChannels(Context context) {
+        if (Build.VERSION.SDK_INT < 26) {
+            return;
+        }
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationChannel defaultChannel = new NotificationChannel("default",
+                "default chanel",
+                NotificationManager.IMPORTANCE_DEFAULT);
+
+        defaultChannel.setDescription("default chanel for our notifications");
+        notificationManager.createNotificationChannel(defaultChannel);
     }
 
     // создание интента для перехода на нужную активность/фрагмент при нажатии на уведомление
