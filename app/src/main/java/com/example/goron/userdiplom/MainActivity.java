@@ -201,7 +201,9 @@ public class MainActivity extends AppCompatActivity {
     private void postTokken(){
 
 
-        RequestTokken requestTokken = new RequestTokken(dbManager.getFirebaseToken());
+        String tokken = dbManager.getFirebaseToken();
+
+        RequestTokken requestTokken = new RequestTokken(tokken);
 
         callPostTokken =  getService().postToken(requestTokken);
 
@@ -211,8 +213,6 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
 
 
-
-                    // Получить даты фестиваля
                     Boolean isSuccess = response.body().isSuccess();
 
                     // Открыть стартовую активность
