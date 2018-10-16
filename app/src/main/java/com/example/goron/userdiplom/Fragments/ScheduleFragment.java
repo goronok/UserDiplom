@@ -28,6 +28,7 @@ import retrofit2.Callback;
 
 public class ScheduleFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener  {
 
+    private static final int LOCAL_DB_ID = 3;
 
     ExpandableListView expandableListView;
     AdapterSchedule adapterSchedule;

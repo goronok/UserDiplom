@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -13,6 +14,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -40,9 +42,6 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-
-
-
         // Инициализируем элементы:
         frameLayout = findViewById(R.id.content_frame);
         drawerLayout = findViewById(R.id.drawer);
@@ -64,14 +63,6 @@ public class StartActivity extends AppCompatActivity {
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
 
 
-
-        Bundle arguments = getIntent().getExtras();
-        name = arguments.get("name").toString();
-        password = arguments.get("password").toString();
-
-
-
-
         drawerLayout.addDrawerListener(toggle);
 
 
@@ -89,17 +80,43 @@ public class StartActivity extends AppCompatActivity {
             return;
         } else {
             Toast.makeText(getApplicationContext(), "Добро пожаловать", Toast.LENGTH_LONG).show();
-            menuFragment = MenuFragment.newInstance();
-            showFragment(menuFragment);
-        }
+
+            Bundle extras = getIntent().getExtras();
+
+            if(extras.get("destination") == null) {
+                menuFragment = MenuFragment.newInstance();
+                showFragment(menuFragment, "menu");
+            } else {
+                String destination = extras.get("destination").toString();
+                Log.d("notificationsDebug", "destination - " + destination);
+
+                switch (destination){
+                    case "schedule":
+                        ScheduleFragment scheduleFragment = ScheduleFragment.newInstance();
+                        showFragment(scheduleFragment, null);
+                        break;
+                    case "queues":
+                        MyQueueFragment myQueueFragment = MyQueueFragment.newInstance();
+                        showFragment(myQueueFragment, null);
+                        break;
+                    default:
+                        menuFragment = MenuFragment.newInstance();
+                        showFragment(menuFragment, "menu");
+                        break;
+                }// switch
+            }// if-else
+        }// if-else
 
 
     }
 
 
-    private void showFragment(Fragment fragment){
+    private void showFragment(Fragment fragment, String tag){
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.content_frame, fragment).addToBackStack(null).commit();
+        if(tag == null)
+            fragmentTransaction.replace(R.id.content_frame, fragment).addToBackStack(null).commit();
+        else
+            fragmentTransaction.replace(R.id.content_frame, fragment, tag).addToBackStack(null).commit();
     }//showFragment
 
 
@@ -113,7 +130,14 @@ public class StartActivity extends AppCompatActivity {
         if (drawerLayout.isDrawerOpen(GravityCompat.START))  drawerLayout.closeDrawer(GravityCompat.START);
         else if (count == 1) {
            // super.onBackPressed();
-            moveTaskToBack(true);
+//            Log.d("FragmentClass",getSupportFragmentManager().findFragmentByTag("menu").toString());
+            if(getSupportFragmentManager().findFragmentByTag("menu") == null){
+                getSupportFragmentManager().popBackStack();
+                menuFragment = MenuFragment.newInstance();
+                showFragment(menuFragment, "menu");
+            } else {
+                moveTaskToBack(true);
+            }
 
         }else {
             getSupportFragmentManager().popBackStack();
@@ -135,7 +159,7 @@ public class StartActivity extends AppCompatActivity {
 
 
                     case R.id.activitys:
-                        showFragment(ActivityFragment.newInstance());
+                        showFragment(ActivityFragment.newInstance(), null);
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
 
@@ -146,7 +170,7 @@ public class StartActivity extends AppCompatActivity {
                         break;
 
                     case R.id.schedule:
-                        showFragment(ScheduleFragment.newInstance());
+                        showFragment(ScheduleFragment.newInstance(), null);
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
 
@@ -161,7 +185,7 @@ public class StartActivity extends AppCompatActivity {
 
 
                     case R.id.myqueues:
-                        showFragment(MyQueueFragment.newInstance());
+                        showFragment(MyQueueFragment.newInstance(), null);
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
                 }

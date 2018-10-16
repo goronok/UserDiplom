@@ -14,7 +14,7 @@ import java.io.OutputStream;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static String DB_PATH; // полный путь к базе данных
-    private static String DB_NAME = "adminDataStorage.db";
+    private static String DB_NAME = "customerDataStorage.db";
     private static final int SCHEMA = 1; // версия базы данных
 
     public static final String TABLE_TOKENS = "tokens";

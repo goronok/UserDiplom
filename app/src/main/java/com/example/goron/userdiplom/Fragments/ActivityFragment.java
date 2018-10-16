@@ -33,6 +33,8 @@ import retrofit2.Callback;
 
 public class ActivityFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener  {
 
+    private static final int LOCAL_DB_ID = 2;
+
     RecyclerView recyclerView;
     ActivitiesAdapter activitiesAdapter;
     ProgressDialog mDialog;
