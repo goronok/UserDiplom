@@ -3,13 +3,16 @@ package com.example.goron.userdiplom.Interface;
 import com.example.goron.userdiplom.Model.Activities;
 import com.example.goron.userdiplom.Model.DatesFestival;
 import com.example.goron.userdiplom.Model.InfoQueue;
+import com.example.goron.userdiplom.Model.PostTokken;
 import com.example.goron.userdiplom.Model.Queue;
 import com.example.goron.userdiplom.Model.QueueAddorDelete;
+import com.example.goron.userdiplom.Model.RequestTokken;
 import com.example.goron.userdiplom.Model.Schedule;
 
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -23,6 +26,11 @@ public interface Service  {
     ////
     ////service
     ////
+
+
+    @POST("service/token")
+    Call<PostTokken> postToken(@Body RequestTokken requestTokken);
+
 
 
     // http://example.com/api/v1/service/dates

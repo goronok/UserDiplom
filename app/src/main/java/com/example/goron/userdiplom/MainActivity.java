@@ -18,6 +18,8 @@ import com.example.goron.userdiplom.Manager.DbManager;
 import com.example.goron.userdiplom.Manager.SerializableManager;
 import com.example.goron.userdiplom.Model.DatesFestival;
 import com.example.goron.userdiplom.Model.Login;
+import com.example.goron.userdiplom.Model.PostTokken;
+import com.example.goron.userdiplom.Model.RequestTokken;
 import com.example.goron.userdiplom.Service.ServiceGenerator;
 
 import java.util.HashMap;
@@ -46,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     // Объект хранящий дату фестивалей
     private DatesFestival datesFestival;
     public  Call<DatesFestival> callDate;
+
+    private Call<PostTokken> callPostTokken;
 
 
 
@@ -163,9 +167,7 @@ public class MainActivity extends AppCompatActivity {
                         // Сохранить полученные права пользователя в файл для дальнейшего использования
                         SerializableManager.saveSerializableObject(getApplication(), datesFestival, FileNameDatesFestival);
 
-                        // Открыть стартовую активность
-                        Intent intent = new Intent(getApplicationContext(), StartActivity.class);
-                        startActivity(intent);
+                        postTokken();
 
                         // Если ошибка 401 это ошибка авторизации
                     } else if (response.code() == UNAUTHORIZED) {
@@ -191,5 +193,47 @@ public class MainActivity extends AppCompatActivity {
         return ServiceGenerator.createService(Service.class, name, password);
     }
 
+
+    private Service getService(){
+        return ServiceGenerator.createService(Service.class);
+    }
+
+    private void postTokken(){
+
+
+        RequestTokken requestTokken = new RequestTokken(dbManager.getFirebaseToken());
+
+        callPostTokken =  getService().postToken(requestTokken);
+
+        callPostTokken.enqueue(new Callback<PostTokken>() {
+            @Override
+            public void onResponse(Call<PostTokken> call, retrofit2.Response<PostTokken> response) {
+                if (response.isSuccessful()) {
+
+
+
+                    // Получить даты фестиваля
+                    Boolean isSuccess = response.body().isSuccess();
+
+                    // Открыть стартовую активность
+                    Intent intent = new Intent(getApplicationContext(), StartActivity.class);
+                    startActivity(intent);
+
+                    // Если ошибка 401 это ошибка авторизации
+                } else if (response.code() == UNAUTHORIZED) {
+                    Toast.makeText(getApplicationContext(), "Не верное имя или пароль", Toast.LENGTH_LONG).show();
+                    // Любая другая ошибка
+                } else {
+                    Toast.makeText(getApplicationContext(), "error response, no access to resource?", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostTokken> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
 
 }
