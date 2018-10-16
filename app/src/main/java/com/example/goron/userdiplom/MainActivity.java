@@ -14,10 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.goron.userdiplom.Interface.Service;
+import com.example.goron.userdiplom.Manager.DbManager;
 import com.example.goron.userdiplom.Manager.SerializableManager;
 import com.example.goron.userdiplom.Model.DatesFestival;
 import com.example.goron.userdiplom.Model.Login;
 import com.example.goron.userdiplom.Service.ServiceGenerator;
+
+import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     // Ошибка 401
     private final int UNAUTHORIZED = 401;
 
+    private DbManager dbManager;
+
     // Объект login
     private Login login;
 
@@ -42,33 +47,44 @@ public class MainActivity extends AppCompatActivity {
     private DatesFestival datesFestival;
     public  Call<DatesFestival> callDate;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        // Инициализируем элементы:
-        textInputPassword = findViewById(R.id.textInputPassword);
-        textInputName = findViewById(R.id.textInputName);
-        checkBoxRememberMe = findViewById(R.id.checkBoxRememberMe);
+        dbManager = new DbManager(getApplicationContext());
 
-        goToStartActivity = findViewById(R.id.goToStartActivity);
+        HashMap<String,String> userHashMap = dbManager.getUserData();
 
+        if(userHashMap.size() > 0){
+            setContentView(R.layout.startlogin);
+            getDateToShedule(userHashMap.get("login"),userHashMap.get("password"));
 
-        // Читаем информацию о входе из файла(Запомнить меня)
-        login = SerializableManager.readSerializableObject(getApplicationContext(), FileNameLogin);
+        }else {
+            setContentView(R.layout.activity_main);
 
-        // Обработчик нажатия на кнопку вход
-        clickButtonGoToStartActivity();
-
-
-        // Сохранения логина и пароля
-        loginSave();
+            // Инициализируем элементы:
+            textInputPassword = findViewById(R.id.textInputPassword);
+            textInputName = findViewById(R.id.textInputName);
+            checkBoxRememberMe = findViewById(R.id.checkBoxRememberMe);
+            goToStartActivity = findViewById(R.id.goToStartActivity);
 
 
-        // При выборе checkBoxRememberMe
-        checkBoxRememberMeCheced();
+            // Читаем информацию о входе из файла(Запомнить меня)
+            login = SerializableManager.readSerializableObject(getApplicationContext(), FileNameLogin);
 
+            // Обработчик нажатия на кнопку вход
+            clickButtonGoToStartActivity();
+
+
+            // Сохранения логина и пароля
+            loginSave();
+
+
+            // При выборе checkBoxRememberMe
+            checkBoxRememberMeCheced();
+        }
     }
 
     // При выборе checkBoxRememberMe
@@ -104,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         goToStartActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getDateToShedule();
+                getDateToShedule(null, null);
             }
         });
     }//clickButtonGoToStartActivity
@@ -113,10 +129,17 @@ public class MainActivity extends AppCompatActivity {
 
 
     // Вернуть все даты фестиваля (Каждый раз делать не разумно наверное стоит сохранять в файл)
-    private void getDateToShedule(){
+    private void getDateToShedule(String nameFromDb, String passwordFromDb){
 
-         final String name = textInputName.getText().toString();
-         final String password = textInputPassword.getText().toString();
+        final  String name, password;
+
+        if(nameFromDb != null && passwordFromDb != null){
+           name = nameFromDb;
+           password = passwordFromDb;
+        }else {
+           name = textInputName.getText().toString();
+           password = textInputPassword.getText().toString();
+        }
 
 
         // Если TextInputEditText c  именем или паролем пустые
@@ -127,12 +150,12 @@ public class MainActivity extends AppCompatActivity {
 
             callDate = getService(name, password).getDatesFestival();
 
-
             callDate.enqueue(new Callback<DatesFestival>() {
                 @Override
                 public void onResponse(Call<DatesFestival> call, retrofit2.Response<DatesFestival> response) {
                     if (response.isSuccessful()) {
 
+                        dbManager.addUserData(name,password);
 
                         // Получить даты фестиваля
                         datesFestival = response.body();
@@ -142,8 +165,6 @@ public class MainActivity extends AppCompatActivity {
 
                         // Открыть стартовую активность
                         Intent intent = new Intent(getApplicationContext(), StartActivity.class);
-                        intent.putExtra("name", name);
-                        intent.putExtra("password", password);
                         startActivity(intent);
 
                         // Если ошибка 401 это ошибка авторизации

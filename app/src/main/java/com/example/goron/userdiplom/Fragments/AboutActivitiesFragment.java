@@ -38,6 +38,7 @@ import retrofit2.Response;
 public class AboutActivitiesFragment extends Fragment implements NestedScrollView.OnScrollChangeListener  {
 
     private static final String ARG_PARAM_SCHEDULE = "schedule";
+    private static final int LOCAL_DB_ID = 1;
 
     private Schedule schedule;
 

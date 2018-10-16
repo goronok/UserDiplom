@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.example.goron.userdiplom.Manager.DbManager;
 import com.example.goron.userdiplom.R;
+import com.example.goron.userdiplom.StartActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -26,6 +28,7 @@ public class MessagingService extends FirebaseMessagingService {
     // обработка полученного сообщения
     public void handleMessage() {
         int messageType = Integer.parseInt(currentMessage.getData().get("type"));
+        int notificationId;
 
         switch (messageType) {
             // тип сообщения 0 для теста
@@ -39,6 +42,46 @@ public class MessagingService extends FirebaseMessagingService {
                         )
                 );
                 break;
+
+            // изменилось расписание
+            case 1:
+                notificationId = messageType;
+                sendNotification(
+                        notificationId,
+                        createNotification(
+                                currentMessage.getData().get("title"),
+                                currentMessage.getData().get("body"),
+                                createIntent(StartActivity.class, null,"schedule")
+                        )
+                );
+                break;
+
+            // подходит очередь
+            case 200:
+                notificationId = Integer.parseInt(currentMessage.getData().get("activityId")) + messageType;
+                sendNotification(
+                        notificationId,
+                        createNotification(
+                                currentMessage.getData().get("title"),
+                                currentMessage.getData().get("body"),
+                                createIntent(StartActivity.class, null, "queues")
+                        )
+                );
+                break;
+
+            // опоздал
+            case 201:
+                notificationId = Integer.parseInt(currentMessage.getData().get("activityId")) + messageType - 1;
+                sendNotification(
+                        notificationId,
+                        createNotification(
+                                currentMessage.getData().get("title"),
+                                currentMessage.getData().get("body"),
+                                createIntent(StartActivity.class, null, "queues")
+                        )
+                );
+                break;
+
             default:
                 break;
         }
@@ -55,10 +98,9 @@ public class MessagingService extends FirebaseMessagingService {
     // body  - текст уведомления
     // notifyPendingIntent - для вызова активности/фрагмента при нажатии
     //                       null - если не требуется переход
-    // !!! если нет notifyPendingIntent, может перейти на главную активность TODO: проверить !!!
     private NotificationCompat.Builder createNotification(String title, String body, PendingIntent notifyPendingIntent) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setSmallIcon(R.drawable.logodn120)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setAutoCancel(true)
@@ -73,7 +115,7 @@ public class MessagingService extends FirebaseMessagingService {
     // targetClass   - класс активности/фрагмента, который будем вызывать
     // extraDataKeys - набор ключей дополнительных данных, содержащихся в сообщении
     //                 null - если дополнительные данные не требуются (пример: изменение в расписании)
-    private PendingIntent createIntent(Class targetClass, String[] extraDataKeys) {
+    private PendingIntent createIntent(Class targetClass, String[] extraDataKeys, String destination) {
         // создание Intent для задания действия при нажатии на оповещение
         Intent notifyIntent = new Intent(this, targetClass);
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -86,6 +128,10 @@ public class MessagingService extends FirebaseMessagingService {
             }
         }
 
+        if(destination != null){
+            notifyIntent.putExtra("destination", destination);
+        }
+
         // возвращаем PendingIntent, сформированный на базе notifyIntent
         // TODO: выяснить необходимость изменять requestCode
         return PendingIntent.getActivity(this, 0,
@@ -94,7 +140,8 @@ public class MessagingService extends FirebaseMessagingService {
 
     @Override
     public void onNewToken(String s) {
-        // TODO: send new token to server
+        DbManager manager = new DbManager(getApplicationContext());
+        manager.addFirebaseToken(s);
         Log.d("CurrentToken", "new token: " + s);
     }
 }
