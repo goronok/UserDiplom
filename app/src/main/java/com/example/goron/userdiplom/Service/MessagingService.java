@@ -42,8 +42,7 @@ public class MessagingService extends FirebaseMessagingService {
                         createNotification(
                                 currentMessage.getData().get("title"),
                                 currentMessage.getData().get("body"),
-                                null,
-                                "default"
+                                null
                         )
                 );
                 break;
@@ -56,8 +55,7 @@ public class MessagingService extends FirebaseMessagingService {
                         createNotification(
                                 currentMessage.getData().get("title"),
                                 currentMessage.getData().get("body"),
-                                createIntent(StartActivity.class, null,"schedule"),
-                                "schedule"
+                                createIntent(StartActivity.class, null,"schedule")
                         )
                 );
                 break;
@@ -70,8 +68,7 @@ public class MessagingService extends FirebaseMessagingService {
                         createNotification(
                                 currentMessage.getData().get("title"),
                                 currentMessage.getData().get("body"),
-                                createIntent(StartActivity.class, null, "queues"),
-                                "queues"
+                                createIntent(StartActivity.class, null, "queues")
                         )
                 );
                 break;
@@ -84,8 +81,7 @@ public class MessagingService extends FirebaseMessagingService {
                         createNotification(
                                 currentMessage.getData().get("title"),
                                 currentMessage.getData().get("body"),
-                                createIntent(StartActivity.class, null, "queues"),
-                                "queues"
+                                createIntent(StartActivity.class, null, "queues")
                         )
                 );
                 break;
@@ -106,8 +102,8 @@ public class MessagingService extends FirebaseMessagingService {
     // body  - текст уведомления
     // notifyPendingIntent - для вызова активности/фрагмента при нажатии
     //                       null - если не требуется переход
-    private NotificationCompat.Builder createNotification(String title, String body, PendingIntent notifyPendingIntent, String channelId) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId)
+    private NotificationCompat.Builder createNotification(String title, String body, PendingIntent notifyPendingIntent) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "default")
                 .setSmallIcon(R.drawable.logodn120)
                 .setContentTitle(title)
                 .setContentText(body)
@@ -127,22 +123,12 @@ public class MessagingService extends FirebaseMessagingService {
         }
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationChannel testChannel = new NotificationChannel("default",
-                "test chanel",
-                NotificationManager.IMPORTANCE_DEFAULT);
-        NotificationChannel scheduleChannel = new NotificationChannel("schedule",
-                "schedule chanel",
-                NotificationManager.IMPORTANCE_DEFAULT);
-        NotificationChannel queueChannel = new NotificationChannel("queues",
-                "queues chanel",
+        NotificationChannel defaultChannel = new NotificationChannel("default",
+                "default chanel",
                 NotificationManager.IMPORTANCE_DEFAULT);
 
-        testChannel.setDescription("chanel for test");
-        scheduleChannel.setDescription("channel for schedule changes");
-        queueChannel.setDescription("channel for queue activities");
-        notificationManager.createNotificationChannel(testChannel);
-        notificationManager.createNotificationChannel(scheduleChannel);
-        notificationManager.createNotificationChannel(queueChannel);
+        defaultChannel.setDescription("default chanel for our notifications");
+        notificationManager.createNotificationChannel(defaultChannel);
     }
 
     // создание интента для перехода на нужную активность/фрагмент при нажатии на уведомление
