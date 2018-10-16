@@ -23,6 +23,7 @@ import com.example.goron.userdiplom.Fragments.ActivityFragment;
 import com.example.goron.userdiplom.Fragments.MenuFragment;
 import com.example.goron.userdiplom.Fragments.MyQueueFragment;
 import com.example.goron.userdiplom.Fragments.ScheduleFragment;
+import com.example.goron.userdiplom.Manager.DbManager;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -32,10 +33,9 @@ public class StartActivity extends AppCompatActivity {
     NavigationView navigationView;
     ViewPager viewpager;
 
-
+    //Фрагмент меню
     MenuFragment menuFragment;
 
-    String name, password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +83,10 @@ public class StartActivity extends AppCompatActivity {
 
             Bundle extras = getIntent().getExtras();
 
-            if(extras.get("destination") == null) {
+
+
+
+            if(extras ==null || extras.get("destination") == null) {
                 menuFragment = MenuFragment.newInstance();
                 showFragment(menuFragment, "menu");
             } else {
@@ -175,6 +178,9 @@ public class StartActivity extends AppCompatActivity {
                         break;
 
                     case R.id.exit:
+
+                        DbManager dbManager = new DbManager(getApplicationContext());
+                        dbManager.deleteUserData();
 
                         intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
