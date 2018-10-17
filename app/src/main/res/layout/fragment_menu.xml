@@ -26,36 +26,36 @@
             android:layout_alignParentTop="true"
             android:orientation="horizontal">
 
-
-
             <RelativeLayout
-                android:id="@+id/relationActivities"
+                android:id="@+id/relationMyQueue"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/imageActivity"
+                    android:id="@+id/imageQueue"
                     android:layout_centerInParent="true"
                     android:layout_weight="1"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:src="@drawable/activity" />
+                    android:src="@drawable/queue" />
+
 
                 <TextView
                     android:textColor="@color/white"
-                    android:text="Активности"
-                    android:layout_marginTop="5dp"
+                    android:text="Моя очередь"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/sandman"
                     android:textSize="22sp"
                     android:textStyle="bold"
                     android:layout_centerHorizontal="true"
-                    android:layout_below="@+id/imageActivity"
+                    android:layout_below="@+id/imageQueue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-
             </RelativeLayout>
+
+
 
 
             <LinearLayout
@@ -124,7 +124,7 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"/>
-            </LinearLayout>
+        </LinearLayout>
 
 
 
@@ -139,6 +139,44 @@
             android:orientation="horizontal">
 
 
+            <RelativeLayout
+                android:id="@+id/relationActivities"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imageActivity"
+                    android:layout_centerInParent="true"
+                    android:layout_weight="1"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/activity" />
+
+                <TextView
+                    android:textColor="@color/white"
+                    android:text="Активности"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/sandman"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/imageActivity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+            </RelativeLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/mainGreen"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"/>
 
             <RelativeLayout
                 android:id="@+id/relationMap"
@@ -152,7 +190,7 @@
                     android:layout_weight="1"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:src="@drawable/map" />
+                    android:src="@drawable/mapgray" />
 
                 <TextView
                     android:textColor="@color/white"
@@ -166,43 +204,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-
-            </RelativeLayout>
-
-
-            <LinearLayout
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/mainGreen"
-                android:layout_width="2dp"
-                android:layout_height="match_parent"/>
-
-            <RelativeLayout
-                android:id="@+id/relationMyQueue"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/imageQueue"
-                    android:layout_centerInParent="true"
-                    android:layout_weight="1"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:src="@drawable/queue" />
-
-
-                <TextView
-                    android:textColor="@color/white"
-                    android:text="Моя очередь"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/sandman"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@+id/imageQueue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
 
             </RelativeLayout>
 

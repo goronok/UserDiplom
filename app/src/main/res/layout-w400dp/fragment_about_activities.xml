@@ -7,7 +7,7 @@
     tools:context=".Fragments.AboutActivitiesFragment">
 
     <android.support.v4.widget.NestedScrollView
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -47,7 +47,7 @@
                     android:id="@+id/textViewCount"
                     android:drawableLeft="@drawable/ic_action_countqueue_white"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent" />
 
                 <TextView
                     android:padding="2dp"
@@ -60,7 +60,7 @@
                     android:textStyle="bold"
                     android:id="@+id/textViewAvgTime"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent" />
 
 
                 <TextView
@@ -74,7 +74,7 @@
                     android:id="@+id/textViewTime"
                     android:drawableLeft="@drawable/ic_action_time_white"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent" />
 
             </LinearLayout>
 

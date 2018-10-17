@@ -167,10 +167,7 @@ public class StartActivity extends AppCompatActivity {
                         break;
 
 
-                    case R.id.settings:
 
-                        drawerLayout.closeDrawer(GravityCompat.START);
-                        break;
 
                     case R.id.schedule:
                         showFragment(ScheduleFragment.newInstance(), null);

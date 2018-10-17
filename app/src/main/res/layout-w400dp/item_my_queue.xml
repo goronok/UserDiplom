@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     android:id="@+id/layoutItemQueue"
-    android:weightSum="2"
+    android:weightSum="3"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
@@ -13,10 +13,10 @@
 
 
     <TextView
+        android:paddingLeft="5dp"
         android:layout_weight="0.8"
         android:background="#4caf81"
         android:paddingTop="5dp"
-        android:layout_gravity="center_horizontal"
         android:id="@+id/nameActivity"
         android:text="Активности"
         android:fontFamily="@font/sandman"

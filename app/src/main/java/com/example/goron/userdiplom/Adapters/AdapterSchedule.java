@@ -30,8 +30,6 @@ public class AdapterSchedule extends BaseExpandableListAdapter {
     // Коллекция с расписанием
     List<Schedule> scheduleList;
 
-
-
     // Коллекция с датами фестиваля
     List<Date> dates;
 

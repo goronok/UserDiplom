@@ -84,6 +84,7 @@ public class AboutActivitiesFragment extends Fragment implements NestedScrollVie
         View view =  inflater.inflate(R.layout.fragment_about_activities, container, false);
 
 
+
         if(mDialog == null) {
             mDialog = new ProgressDialog(getContext());
             mDialog.setMessage("Загрузка информации...");
@@ -173,7 +174,9 @@ public class AboutActivitiesFragment extends Fragment implements NestedScrollVie
                     textViewTime.setText( schedule.getStart_time().substring(0,5) + " - " + schedule.getEnd_time().substring(0,5));
 
                     textViewCount.setText( String.valueOf(infoQueue.getInfo().getLength()));
-                    textViewAvgTime.setText( String.valueOf(infoQueue.getInfo().getAverageTime()));
+
+                    String avg = infoQueue.getInfo().getAverageTime() < 0 ? "--" : String.valueOf(infoQueue.getInfo().getAverageTime());
+                    textViewAvgTime.setText( avg );
 
                     mDialog.cancel();
 
