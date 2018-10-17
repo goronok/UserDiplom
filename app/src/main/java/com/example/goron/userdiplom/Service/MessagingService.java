@@ -32,8 +32,6 @@ public class MessagingService extends FirebaseMessagingService {
         int messageType = Integer.parseInt(currentMessage.getData().get("type"));
         int notificationId;
 
-        initChannels(this);
-
         switch (messageType) {
             // тип сообщения 0 для теста
             case 0:
@@ -103,12 +101,19 @@ public class MessagingService extends FirebaseMessagingService {
     // notifyPendingIntent - для вызова активности/фрагмента при нажатии
     //                       null - если не требуется переход
     private NotificationCompat.Builder createNotification(String title, String body, PendingIntent notifyPendingIntent) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "default")
-                .setSmallIcon(R.drawable.logodn120)
-                .setContentTitle(title)
-                .setContentText(body)
-                .setAutoCancel(true)
-                .setDefaults(Notification.DEFAULT_ALL);
+        NotificationCompat.Builder builder;
+        if (Build.VERSION.SDK_INT < 26) {
+            builder = new NotificationCompat.Builder(this);
+        } else {
+            initChannels(this);
+            builder = new NotificationCompat.Builder(this, "default");
+        }
+
+        builder.setSmallIcon(R.drawable.logodn120)
+        .setContentTitle(title)
+        .setContentText(body)
+        .setAutoCancel(true)
+        .setDefaults(Notification.DEFAULT_ALL);
 
         if (notifyPendingIntent != null)
             builder.setContentIntent(notifyPendingIntent);

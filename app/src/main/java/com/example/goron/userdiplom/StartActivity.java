@@ -83,10 +83,7 @@ public class StartActivity extends AppCompatActivity {
 
             Bundle extras = getIntent().getExtras();
 
-
-
-
-            if(extras ==null || extras.get("destination") == null) {
+            if(extras == null || extras.get("destination") == null) {
                 menuFragment = MenuFragment.newInstance();
                 showFragment(menuFragment, "menu");
             } else {

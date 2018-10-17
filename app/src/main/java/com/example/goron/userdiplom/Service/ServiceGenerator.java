@@ -16,9 +16,9 @@ public class ServiceGenerator {
 
 
     // Endpoint API
-    public static final String API_BASE_URL = "http://43981f73.ngrok.io/api/v1/";
+    public static final String API_BASE_URL = "http://98a4d94d.ngrok.io/api/v1/";
     // Endpoint Image
-    public static final String API_BASE_URL_IMAGE = "http://43981f73.ngrok.io/";
+    public static final String API_BASE_URL_IMAGE = "http://98a4d94d.ngrok.io/";
 
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 

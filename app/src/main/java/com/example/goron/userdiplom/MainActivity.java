@@ -224,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Не верное имя или пароль", Toast.LENGTH_LONG).show();
                     // Любая другая ошибка
                 } else {
-                    Toast.makeText(getApplicationContext(), "error response, no access to resource?", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Сервер временно недоступен. Повторите попытку позже или обратитесь к администрации.", Toast.LENGTH_LONG).show();
                 }
             }
 
